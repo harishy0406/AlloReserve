@@ -14,7 +14,7 @@
 
 AlloReserve is a production-ready, highly robust **Temporary Stock Reservation System** built with **Next.js 16 (App Router)**, **TypeScript**, **Supabase (PostgreSQL)**, and **Upstash Redis**. It solves the classic e-commerce **"Last Item Problem"** under high-concurrency environments.
 
-
+live Deployment:  https://allo-reserve-nine.vercel.app/
 
 ---
 
