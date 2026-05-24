@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 interface Product {
@@ -45,7 +45,7 @@ export default function CheckoutPage() {
   const [paymentStatus, setPaymentStatus] = useState<"idle" | "authorizing" | "success" | "failed">("idle");
   const [error, setError] = useState<string | null>(null);
 
-  const initialDurationRef = useRef<number>(600);
+  const [initialDuration, setInitialDuration] = useState<number>(600);
 
   // Fetch reservation details
   useEffect(() => {
@@ -73,11 +73,12 @@ export default function CheckoutPage() {
           } else {
             setTimeLeft(secondsLeft);
             const totalDuration = Math.max(0, Math.floor((expiryTime - new Date(data.createdAt).getTime()) / 1000));
-            initialDurationRef.current = totalDuration > 0 ? totalDuration : 600;
+            setInitialDuration(totalDuration > 0 ? totalDuration : 600);
           }
         }
-      } catch (err: any) {
-        setError(err.message || "An unexpected error occurred");
+      } catch (err: unknown) {
+        const errMsg = err instanceof Error ? err.message : "An unexpected error occurred";
+        setError(errMsg);
       } finally {
         setLoading(false);
       }
@@ -126,9 +127,10 @@ export default function CheckoutPage() {
 
       setPaymentStatus("success");
       setStatus("CONFIRMED");
-    } catch (err: any) {
+    } catch (err: unknown) {
       setPaymentStatus("failed");
-      setError(err.message || "Failed to confirm payment");
+      const errMsg = err instanceof Error ? err.message : "Failed to confirm payment";
+      setError(errMsg);
     } finally {
       setActionLoading(false);
     }
@@ -150,8 +152,9 @@ export default function CheckoutPage() {
 
       setStatus("RELEASED");
       setPaymentStatus("failed");
-    } catch (err: any) {
-      setError(err.message || "Failed to cancel transaction");
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : "Failed to cancel transaction";
+      setError(errMsg);
     } finally {
       setActionLoading(false);
     }
@@ -175,8 +178,9 @@ export default function CheckoutPage() {
 
       setTimeLeft(0);
       setStatus("EXPIRED");
-    } catch (err: any) {
-      setError(err.message || "Failed to expire reservation");
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : "Failed to expire reservation";
+      setError(errMsg);
     } finally {
       setActionLoading(false);
     }
@@ -268,7 +272,7 @@ export default function CheckoutPage() {
 
   // Calculate circular progress for countdown ring
   const strokeDasharray = 2 * Math.PI * 45; // r=45 -> 282.7
-  const progressRatio = timeLeft / (initialDurationRef.current || 600);
+  const progressRatio = timeLeft / (initialDuration || 600);
   const strokeDashoffset = strokeDasharray * (1 - progressRatio);
 
   // Set timer color class based on time remaining

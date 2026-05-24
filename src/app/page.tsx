@@ -34,15 +34,13 @@ export default function CatalogPage() {
   const [selections, setSelections] = useState<Record<string, { warehouseId: string; quantity: number }>>({});
 
   // Generate or load idempotency key from memory
-  const [idempotencyKey, setIdempotencyKey] = useState<string>("");
+  const [idempotencyKey, setIdempotencyKey] = useState<string>(() => uuidv4());
 
-  useEffect(() => {
-    setIdempotencyKey(uuidv4());
-  }, []);
-
-  const loadProducts = async () => {
+  const loadProducts = async (showLoading = false) => {
     try {
-      setLoading(true);
+      if (showLoading) {
+        setLoading(true);
+      }
       const res = await fetch("/api/products");
       if (!res.ok) throw new Error("Failed to load products");
       const data = await res.json();
@@ -59,7 +57,7 @@ export default function CatalogPage() {
         };
       });
       setSelections(initialSelections);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       setErrorBanner({ message: "Could not sync catalog with real-time stock levels.", type: "error" });
     } finally {
@@ -68,7 +66,8 @@ export default function CatalogPage() {
   };
 
   useEffect(() => {
-    loadProducts();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadProducts(false);
   }, []);
 
   // Handle warehouse changes
@@ -132,9 +131,10 @@ export default function CatalogPage() {
       
       // Successfully reserved! Redirect to checkout page.
       router.push(`/checkout/${reservation.id}`);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setErrorBanner({ message: err.message || "A race condition was detected. Your checkout slot could not be secured.", type: "error" });
+      const errMsg = err instanceof Error ? err.message : "A race condition was detected. Your checkout slot could not be secured.";
+      setErrorBanner({ message: errMsg, type: "error" });
       
       // Refresh products to show the updated stock count!
       loadProducts();

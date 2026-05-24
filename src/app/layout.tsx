@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -36,10 +37,10 @@ export default function RootLayout({
       <body>
         <nav className="navbar">
           <div className="navbar-inner">
-            <a href="/" className="navbar-brand">
+            <Link href="/" className="navbar-brand">
               <span className="navbar-logo">◈</span>
               <span className="navbar-title">AlloReserve</span>
-            </a>
+            </Link>
             <span className="navbar-tagline">
               Inventory Reservation System
             </span>

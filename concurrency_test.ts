@@ -17,6 +17,27 @@ import { v4 as uuidv4 } from "uuid";
 
 const BASE_URL = "http://localhost:3000";
 
+interface InventoryItem {
+  totalStock: number;
+  reservedStock: number;
+  warehouseId: string;
+  warehouse: {
+    name: string;
+  };
+}
+
+interface ProductItem {
+  id: string;
+  name: string;
+  inventories: InventoryItem[];
+}
+
+interface TestResponse {
+  id?: string;
+  error?: string;
+  details?: string;
+}
+
 async function runConcurrencyTest() {
   console.log("⚡ Starting Concurrency Race Condition Test...");
   console.log("Fetching local catalog to find a scarce product (1 unit left)...");
@@ -27,7 +48,7 @@ async function runConcurrencyTest() {
       throw new Error(`Failed to fetch catalog: ${productsRes.statusText}. Is your dev server running?`);
     }
 
-    const products = await productsRes.json();
+    const products = (await productsRes.json()) as ProductItem[];
     
     // Find a product that has exactly 1 unit left in a warehouse
     let targetProductId = "";
@@ -37,7 +58,7 @@ async function runConcurrencyTest() {
 
     for (const p of products) {
       const scarceInv = p.inventories.find(
-        (inv: any) => inv.totalStock - inv.reservedStock === 1
+        (inv) => inv.totalStock - inv.reservedStock === 1
       );
       if (scarceInv) {
         targetProductId = p.id;
@@ -90,7 +111,7 @@ async function runConcurrencyTest() {
           quantity: 1,
         }),
       }).then(async (res) => {
-        const body = await res.json();
+        const body = (await res.json()) as TestResponse;
         return {
           clientName,
           status: res.status,
@@ -137,8 +158,9 @@ async function runConcurrencyTest() {
       console.log("   ⚠️ VERDICT: INCONCLUSIVE. Make sure the target product had exactly 1 unit left before running the script.");
     }
 
-  } catch (error: any) {
-    console.error("\n❌ Concurrency Test Failed with Error:", error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("\n❌ Concurrency Test Failed with Error:", message);
   }
 }
 
