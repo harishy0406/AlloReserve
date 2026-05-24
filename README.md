@@ -174,11 +174,8 @@ cp .env.example .env
 ```
 Fill in the following connection credentials:
 ```ini
-# Supabase Transaction Pooler (Port 6543)
-DATABASE_URL="postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true"
-
-# Supabase Direct URL (Port 5432) for Migrations
-DIRECT_URL="postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres"
+# Supabase Connection URL (For Prisma v7, use your direct port 5432 connection for migrations, or transaction pooler 6543 for serverless runtimes. Note: directUrl property is fully deprecated in Prisma v7)
+DATABASE_URL="postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres"
 
 # Upstash Redis credentials
 UPSTASH_REDIS_REST_URL="https://[your-endpoint].upstash.io"

@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
 export default defineConfig({
@@ -6,10 +5,8 @@ export default defineConfig({
   migrations: {
     path: "prisma/migrations",
   },
+  engine: "classic",
   datasource: {
-    // Pooled connection (port 6543) for general queries
     url: process.env["DATABASE_URL"],
-    // Direct connection (port 5432) for migrations
-    directUrl: process.env["DIRECT_URL"],
   },
 });
