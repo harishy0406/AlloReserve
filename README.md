@@ -21,7 +21,8 @@ AlloReserve is a production-ready, highly robust **Temporary Stock Reservation S
 
 ### 🖥️ Real-Time Product Catalog
 Premium glassmorphic interface showing dynamic stock indicators. Badges automatically transition from green to critical pulsing red under scarce availability.
-![Real-Time Catalog Preview](public/images/catalog_preview.png)
+
+<img width="3112" height="1643" alt="Real-Time Product Catalog Preview" src="https://github.com/user-attachments/assets/3fb877fe-6447-42bf-83cd-3e7ad3ef9471" />
 
 ### 💳 Interactive Payment Terminal
 Interactive terminal with live bank simulation featuring a neon circular SVG countdown progress ring tracking reservation lock TTL.
@@ -85,7 +86,7 @@ AlloReserve/
 
 ## ⚡ Concurrency Locking Strategy
 
-To achieve zero-overselling, we implement **Pessimistic Locking** inside a database transaction:
+To achieve zero-overselling, I implement **Pessimistic Locking** inside a database transaction:
 
 ```typescript
 const inventoryRows = await tx.$queryRaw<InventoryRow[]>`
@@ -99,14 +100,14 @@ const inventoryRows = await tx.$queryRaw<InventoryRow[]>`
 ### How It Works:
 1. **Row-Level Lock:** The PostgreSQL `SELECT ... FOR UPDATE` query locks the specific `Inventory` row for the duration of the transaction.
 2. **Blocking Concurrent Reads:** Any concurrent transaction trying to acquire a lock on the *same* inventory row is blocked and queued until the active transaction commits or rolls back.
-3. **Strict Stock Check:** We calculate `availableStock = totalStock - reservedStock`. If `availableStock < requestedQuantity`, we throw an `InsufficientStockError` (which translates to a `409 Conflict` HTTP status), rolling back the transaction.
+3. **Strict Stock Check:** I calculate `availableStock = totalStock - reservedStock`. If `availableStock < requestedQuantity`, I throw an `InsufficientStockError` (which translates to a `409 Conflict` HTTP status), rolling back the transaction.
 4. **Safety Level:** Using a `ReadCommitted` isolation level with `FOR UPDATE` is highly performant and guarantees exactly one transaction succeeds while concurrent competitors receive `409` instantly.
 
 ---
 
 ## ⏱️ Auto-Expiry & Cleanup Mechanism
 
-AlloReserve uses a hybrid cleanup strategy to ensure stock is never permanently leaked if checkout is abandoned:
+AlloReserve uses my hybrid cleanup strategy to ensure stock is never permanently leaked if checkout is abandoned:
 
 ### 1. Active Cleanup (Vercel Cron Job)
 Configured in `vercel.json`, Vercel invokes `/api/cron/cleanup` every minute. It queries and releases all expired reservations in bulk:
@@ -127,9 +128,9 @@ On every `GET /api/products` request, the server runs a lazy cleanup check *befo
 
 ## 🔑 Idempotency (Bonus Feature)
 
-To prevent duplicate reservations from network retries, browser page refreshes, or aggressive double-clicking, the system supports a custom `idempotency-key` header cached in Redis:
-* When a client initiates checkout, we check the cache using the idempotency key.
-* If a cached response exists, we immediately replay it.
+To prevent duplicate reservations from network retries, browser page refreshes, or aggressive double-clicking, my system supports a custom `idempotency-key` header cached in Redis:
+* When a client initiates checkout, I check the cache using the idempotency key.
+* If a cached response exists, I immediately replay it.
 * If not, the transaction executes normally and caches the result for **5 minutes**.
 * The cache fails-open gracefully; if Upstash Redis is down, checkout still proceeds safely.
 
@@ -189,7 +190,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## 🧪 Testing Verification
 
 ### Automated Concurrency Test
-We have provided a multi-threaded test script `concurrency_test.ts` in the project's scratch directory to demonstrate lock safety:
+I have provided a multi-threaded test script `concurrency_test.ts` in the project's root directory to demonstrate lock safety:
 * **Scenario:** Shoots 10 simultaneous API requests at the exact same millisecond to reserve the last remaining unit of an item.
 * **Expected Output:** Exactly 1 request receives a `201 Created` with a valid reservation ID, while the other 9 receive `409 Conflict` (Insufficient Stock).
 * **To Run:**
@@ -213,7 +214,7 @@ Ensure your Supabase PostgreSQL database and Upstash Redis instances are fully c
 
 ### 2. Vercel Settings
 * Connect your GitHub repository to Vercel.
-* Add all environment variables from your `.env` file in the Vercel project settings dashboard.
+* Add all environment variables from my `.env` file in the Vercel project settings dashboard.
 * Vercel will automatically build the project using the preset build script `prisma generate && next build`.
 
 ### 3. Vercel Cron Job
