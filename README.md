@@ -58,6 +58,14 @@ AlloReserve introduces a **short-lived stock hold (e.g., 10 minutes)** secured a
 | **Styling** | Tailwind CSS + Custom CSS | Glassmorphism, Outfit display typography, floating cards |
 | **Deployment** | Vercel | Serverless functions hosting + Vercel Cron Jobs |
 
+### 🌐 Live Production Deployment
+
+AlloReserve is fully deployed and running in production on Vercel with Supabase PostgreSQL and Upstash Redis infrastructure.
+<img width="1798" height="538" alt="image" src="https://github.com/user-attachments/assets/c51e7ceb-0e46-4b1f-b974-329c33821214" />
+
+#### 🔗 Live Application
+
+[Visit AlloReserve Deployment](https://allo-reserve-nine.vercel.app)
 
 ### 🗄️ Supabase PostgreSQL Database
 
