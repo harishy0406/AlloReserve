@@ -1,5 +1,5 @@
 # ◈ AlloReserve — Temporary Stock Reservation System
-<div align="left">
+<div align="center">
 
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232a?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -63,7 +63,8 @@ AlloReserve introduces a **short-lived stock hold (e.g., 10 minutes)** secured a
 
 Supabase is used as the primary hosted PostgreSQL database for managing products, warehouses, inventory records, and reservation transactions. Connection pooling is handled through Supavisor to efficiently support high-concurrency reservation requests under heavy traffic conditions.
 
-<img width="1205" height="622" alt="supabase-schema-qiuancpgzutycajomliw (1)" src="https://github.com/user-attachments/assets/de42640b-862b-4455-92f7-a32c92c5213c" />
+<img width="1396" height="806" alt="image" src="https://github.com/user-attachments/assets/fcf4bcda-6ea7-4b11-83b4-e6998d29db49" />
+
 
 
 ### ⚡ Upstash Redis Cache
