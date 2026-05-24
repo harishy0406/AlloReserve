@@ -1,8 +1,5 @@
 # ◈ AlloReserve — Temporary Stock Reservation System
-
-AlloReserve is a production-ready, highly robust **Temporary Stock Reservation System** built with **Next.js 16 (App Router)**, **TypeScript**, **Supabase (PostgreSQL)**, and **Upstash Redis**. It solves the classic e-commerce **"Last Item Problem"** under high-concurrency environments.
-
-<div align="center">
+<div align="left">
 
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232a?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -15,6 +12,10 @@ AlloReserve is a production-ready, highly robust **Temporary Stock Reservation S
 
 </div>
 
+AlloReserve is a production-ready, highly robust **Temporary Stock Reservation System** built with **Next.js 16 (App Router)**, **TypeScript**, **Supabase (PostgreSQL)**, and **Upstash Redis**. It solves the classic e-commerce **"Last Item Problem"** under high-concurrency environments.
+
+
+
 ---
 
 ## 📸 Snapshots
@@ -26,7 +27,8 @@ Premium glassmorphic interface showing dynamic stock indicators. Badges automati
 
 ### 💳 Interactive Payment Terminal
 Interactive terminal with live bank simulation featuring a neon circular SVG countdown progress ring tracking reservation lock TTL.
-![Interactive Checkout Terminal Preview](public/images/checkout_preview.png)
+![Interactive Checkout Terminal Preview]<img width="1518" height="898" alt="Screenshot 2026-05-24 120009" src="https://github.com/user-attachments/assets/c18100e1-a824-4cb0-b964-ca1d9df20a93" />
+
 
 ---
 
@@ -55,6 +57,20 @@ AlloReserve introduces a **short-lived stock hold (e.g., 10 minutes)** secured a
 | **Caching** | Upstash Redis | Edge-compatible REST Redis client for transaction idempotency |
 | **Styling** | Tailwind CSS + Custom CSS | Glassmorphism, Outfit display typography, floating cards |
 | **Deployment** | Vercel | Serverless functions hosting + Vercel Cron Jobs |
+
+
+### 🗄️ Supabase PostgreSQL Database
+
+Supabase is used as the primary hosted PostgreSQL database for managing products, warehouses, inventory records, and reservation transactions. Connection pooling is handled through Supavisor to efficiently support high-concurrency reservation requests under heavy traffic conditions.
+
+<img width="1205" height="622" alt="supabase-schema-qiuancpgzutycajomliw (1)" src="https://github.com/user-attachments/assets/de42640b-862b-4455-92f7-a32c92c5213c" />
+
+
+### ⚡ Upstash Redis Cache
+
+Upstash Redis is used for idempotency handling and request replay protection. It prevents duplicate reservation creation during network retries, accidental refreshes, and aggressive double-click actions during checkout.
+
+<img width="1744" height="819" alt="image" src="https://github.com/user-attachments/assets/234a9ee9-5797-4e8f-817a-21093f4c9e53" />
 
 ---
 
@@ -230,3 +246,13 @@ Vercel automatically parses `vercel.json` to register the cron schedule:
 }
 ```
 This runs the background cleanup process every minute, ensuring completely automated hold restoration.
+
+---
+
+<div align="center">
+
+**Made with ❤️ by M Harish Gautham**
+
+⭐ If you find this project helpful, please star it! ⭐
+
+</div>
